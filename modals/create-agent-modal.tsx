@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import qs from "query-string";
 
-import useModalStore from "@/hooks/use-store-modal";
+import useModalStore from "@/hooks/use-modal-store";
 import { useParams, useRouter } from "next/navigation";
 
 import {
@@ -76,7 +76,7 @@ const CreateTableModal = () => {
 
   return (
     <Dialog
-      open={isOpen && modalType === "create-table"}
+      open={isOpen && modalType === "create-agent"}
       onOpenChange={onClose}
     >
       <DialogContent className="bg-white text-black sm:max-w-[425px] overflow-hidden rounded-md">

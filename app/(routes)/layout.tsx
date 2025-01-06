@@ -4,6 +4,7 @@ import "@/app/globals.css";
 
 import { ThemeProvider } from "@/providers/theme-provider";
 import ZustandModalProvider from "@/providers/modal-provider";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
         >
           <ZustandModalProvider />
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
