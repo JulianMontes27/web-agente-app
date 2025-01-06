@@ -1,4 +1,5 @@
 import React from "react";
+import CreateAgentButton from "@/components/business/dashboard-main/create-agent-btn";
 
 interface DashboardMainPageProps {
   params: {
@@ -8,8 +9,14 @@ interface DashboardMainPageProps {
 
 const DashboardMainPage: React.FC<DashboardMainPageProps> = ({ params }) => {
   /* Fetch User data using params */
-  
-  return <div>DashboardMainPage</div>;
+
+  return (
+    <div className="p-3">
+      <div>
+        <CreateAgentButton />
+      </div>
+    </div>
+  );
 };
 
 export default DashboardMainPage;
