@@ -21,7 +21,6 @@ interface UserButtonProps {
 }
 
 export default function UserButton({ user }: UserButtonProps) {
-//   const user_role = user.role;
   const handleLogout = async () => {
     "use server";
 

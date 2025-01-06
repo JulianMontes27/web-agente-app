@@ -6,9 +6,4 @@ import { db } from "./utils/db";
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db),
   providers: [Google],
-  // callbacks: {
-  //   async session({ session, user, token }: any) {
-  //     return session;
-  //   },
-  // },
 });

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 
 import { ThemeProvider } from "@/providers/theme-provider";
 import ZustandModalProvider from "@/providers/modal-provider";
@@ -38,7 +38,7 @@ export default function RootLayout({
         >
           <ZustandModalProvider />
           {children}
-        </ThemeProvider>{" "}
+        </ThemeProvider>
       </body>
     </html>
   );
