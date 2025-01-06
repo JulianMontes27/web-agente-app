@@ -1,9 +1,12 @@
+import { User } from "next-auth";
 import { create } from "zustand";
 
 export type ModalType = "create-agent";
 
 //items to send in a modal
-interface ModalData {}
+interface ModalData {
+  user?: User;
+}
 
 interface ModalStore {
   modalType: ModalType | null;

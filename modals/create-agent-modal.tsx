@@ -1,12 +1,12 @@
 "use client";
 
+import axios from "axios";
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import axios from "axios";
-import qs from "query-string";
-
+import useSWR from "swr";
 import useModalStore from "@/hooks/use-modal-store";
 import { useParams, useRouter } from "next/navigation";
 
@@ -28,49 +28,43 @@ import {
 import { Input } from "@/components/ui/input";
 
 import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
-  tableNumber: z.string().min(0),
+  name: z.string().min(0),
+  short_dsc: z.string().min(0),
 });
 
-const CreateTableModal = () => {
-  const { isOpen, onClose, modalType } = useModalStore();
+const CreateAgentModal = () => {
+  const { isOpen, onClose, modalType, data } = useModalStore();
   const router = useRouter();
   const params = useParams();
-
   if (!params) {
-    router.push("/");
+    return router.push("/");
   }
+  if (!data) throw new Error("No data object.");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tableNumber: "",
+      name: "",
+      short_dsc: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      //create a url to query, with a search param (restaurantId)
-      const url = qs.stringifyUrl({
-        url: "/api/tables",
-        query: {
-          restaurantId: params?.restaurantId,
-        },
-      });
-      await axios.post(url, values).then((res) => {
-        router.refresh();
-        //res.data
-        if (res.data)
-          router.push(
-            `/dashboard/restaurants/${params?.restaurantId}/${res.data.id}`
-          );
-      });
-      toast.success("Mesa creada.");
-
-      onClose();
+      const res = await axios
+        .post("/api/agents", values)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     } catch (error) {
       console.log(error);
-      toast.error("Ocurrió un error creando tu Mesa.");
+      toast.error("There was an error creating your Agent. Try again later");
     }
   }
 
@@ -80,43 +74,68 @@ const CreateTableModal = () => {
       onOpenChange={onClose}
     >
       <DialogContent className="bg-white text-black sm:max-w-[425px] overflow-hidden rounded-md">
-        <DialogHeader className="py-3 px-3">
-          <DialogTitle className="font-semibold text-2xl">
-            Crea una Mesa
+        <DialogHeader>
+          <DialogTitle className="font-semibold text-4xl">
+            Create an AI Agent
           </DialogTitle>
         </DialogHeader>
         <div>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-8 flex flex-col gap-6"
+            >
               <FormField
                 control={form.control}
-                name="tableNumber"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Numero de mesa</FormLabel>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input
-                        className="bg-white focus:ring-0 text-black "
-                        placeholder="1"
+                        className="bg-white focus:ring-0 text-black text-sm "
+                        placeholder="Business analyzer bot"
                         {...field}
                         disabled={form.formState.isSubmitting}
                       />
                     </FormControl>
                     <FormDescription>
-                      Este es el numero de la mesa en tu restaurante.
+                      Unique name for your AI Agent.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="short_dsc"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-white focus:ring-0 text-black text-sm "
+                        placeholder="Analyses large amount of excel files into robust and well made reports."
+                        {...field}
+                        disabled={form.formState.isSubmitting}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      A short description about your AI Agent.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <button
+              <Button
                 type="submit"
-                className="w-full transform transition-transform duration-300 ease-in-out hover:scale-105 px-4 py-2 text-white rounded bg-blue-900"
+                className="w-full transform flex items-center
+                transition-transform duration-300 ease-in-out hover:scale-105  text-white rounded "
                 disabled={form.formState.isSubmitting}
               >
-                Añadir
-              </button>
+                Create
+              </Button>
             </form>
           </Form>
         </div>
@@ -125,4 +144,4 @@ const CreateTableModal = () => {
   );
 };
 
-export default CreateTableModal;
+export default CreateAgentModal;

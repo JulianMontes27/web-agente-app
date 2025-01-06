@@ -1,5 +1,6 @@
 "use client";
 
+import CreateAgentModal from "@/modals/create-agent-modal";
 import { useState, useEffect } from "react";
 
 const ZustandModalProvider = () => {
@@ -11,7 +12,11 @@ const ZustandModalProvider = () => {
     //we are still on the server
     return null;
   }
-  return <section></section>;
+  return (
+    <section>
+      <CreateAgentModal />
+    </section>
+  );
 };
 
 export default ZustandModalProvider;

@@ -12,9 +12,7 @@ const DashboardMainPage: React.FC<DashboardMainPageProps> = ({ params }) => {
 
   return (
     <div className="p-3">
-      <div>
-        <CreateAgentButton />
-      </div>
+      <CreateAgentButton />
     </div>
   );
 };
